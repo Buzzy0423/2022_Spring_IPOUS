@@ -1,6 +1,7 @@
 <template>
   <el-config-provider namespace="ep">
     <BaseHeader />
+    <Information_box/>
   </el-config-provider>
 </template>
 

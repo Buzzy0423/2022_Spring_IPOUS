@@ -7,7 +7,9 @@ import {toggleDark} from '~/composables';
 <template>
   <el-menu class="el-menu-demo" mode="horizontal">
     <div class="logo_image">
-      <el-image src='src/assets/logo.png' style="width: 128px; height: 39px" fit="fill"/>
+      <a href="http://www.imed-lab.com/">
+        <el-image src='src/assets/logo.png' style="width: 128px; height: 39px" fit="fill"/>
+      </a>
     </div>
     <el-menu-item index="1">首页</el-menu-item>
     <el-menu-item index="2">功能</el-menu-item>
