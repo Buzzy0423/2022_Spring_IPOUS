@@ -1,37 +1,23 @@
 <template>
-  <div class="logo" style="float: left">
-    <img alt="IMED logo" src="./assets/logo.png" width="128" height="39">
-  </div>
-
-  <br/>
-
-  <MainMenu></MainMenu>
+  <el-config-provider namespace="ep">
+    <BaseHeader />
+    <div style="display: flex">
+      <BaseSide />
+      <div>
+        <img alt="Vue logo" class="element-plus-logo" src="./assets/logo.png" />
+        <HelloWorld msg="Hello Vue 3.0 + Element Plus + Vite" />
+      </div>
+    </div>
+  </el-config-provider>
 </template>
-
-<script>
-import MainMenu from './components/Main-Menu'
-
-export default {
-  name: 'App',
-  components: {
-    MainMenu
-  }
-}
-</script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: var(--ep-text-color-primary);
 }
 
-.logo {
-  position: relative;
-  left: 0%;
-  top: 0%;
+.element-plus-logo {
+  width: 50%;
 }
 </style>
