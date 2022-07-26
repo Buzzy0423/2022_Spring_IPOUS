@@ -1,42 +1,44 @@
+<script setup lang="ts">
+import {ref} from "vue";
+import {ElMessage} from 'element-plus'
+
+let button_click: boolean = false;
+
+</script>
+
 <template>
   <el-card
-      id="CT_image_1"
+      id="information"
       class="information"
       style="border-radius: 8px"
   >
-    <el-button type="primary" class="edit_button" @click="changeHint()">
-      {{ hint ? '编辑信息' : '确认信息' }}
+    <div class='patient_info'>
+      <p><b>
+        病人信息
+      </b></p>
+    </div>
+    <el-button type="primary" class="edit_button" @click="button_click = !button_click">
+      {{ button_click ? '编辑信息' : '更改信息' }}
     </el-button>
   </el-card>
 </template>
 
-<script>
-export default {
-  name: "Information_box"
-
-}
-const app = {
-  data(){
-  },
-  methods:{
-    changeHint(){
-      hint = !hint
-    }
-  }
-}
-</script>
-
 <style scoped>
 .information {
   height: 400px;
-  width: 800px;
+  width: 1000px;
   position: relative;
   top: 40px;
-  left: 180px;
+  left: 220px;
+}
+
+.patient_info {
+  position: relative;
+  right: 420px;
 }
 
 .edit_button {
   position: relative;
-  top: 320px;
+  top: 260px;
 }
 </style>
