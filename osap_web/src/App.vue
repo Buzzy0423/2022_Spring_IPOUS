@@ -1,9 +1,7 @@
 <template>
   <el-config-provider namespace="ep">
-    <BaseHeader />
-    <div class="information_box">
-      <Information_box/>
-    </div>
+    <BaseHeader/>
+    <info class="info"></info>
     <Record/>
   </el-config-provider>
 </template>
@@ -14,7 +12,10 @@
   color: var(--ep-text-color-primary);
 }
 
-.element-plus-logo {
-  width: 50%;
+.info {
+  height: 10%;
+  width: 70%;
+  margin-top: 2%;
+  margin-left: 15%;
 }
 </style>
