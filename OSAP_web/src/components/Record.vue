@@ -23,7 +23,7 @@
       <el-card
           id="record"
           class="record"
-          style="border-radius: 8px"
+          style="border-radius: 8px" shadow="never"
       >
       <div style="margin: 15px">
         <el-table :data="tableData" style="width: 100%">
@@ -113,14 +113,4 @@ export default {
 </script>
 
 <style scoped>
-  .model_record{
-    position: relative;
-    top: 60px;
-  }
-  .record{
-    height: 400px;
-    width: 1000px;
-    position: relative;
-    left: 205px;
-  }
 </style>

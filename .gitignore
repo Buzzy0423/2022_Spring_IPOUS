@@ -12,4 +12,4 @@ package-lock.json
 pnpm-lock.yaml
 
 *.log
-.DS_Store
+**/.DS_Store
