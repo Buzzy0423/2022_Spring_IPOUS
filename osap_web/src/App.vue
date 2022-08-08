@@ -1,8 +1,21 @@
 <template>
   <el-config-provider namespace="ep">
-    <BaseHeader/>
-    <info class="info"/>
-    <Record class="record"/>
+    <el-container>
+      <el-header>
+        <BaseHeader/>
+      </el-header>
+      <el-container>
+        <el-aside width="20%">
+          <instruction class="instruction"/>
+        </el-aside>
+        <el-main>
+          <info class="info"/>
+          <Record class="record"/>
+        </el-main>
+      </el-container>
+    </el-container>
+
+
   </el-config-provider>
 </template>
 
@@ -15,14 +28,22 @@
 .info {
   height: 10%;
   width: 70%;
-  margin-top: 2%;
-  margin-left: 15%;
+  margin-top: 0%;
+  margin-left: 8%;
 }
 
 .record {
   height: 10%;
   width: 70%;
-  margin-top: 0%;
+  margin-top: 20%;
+  margin-left: 8%;
+}
+
+.instruction {
+  height: 10%;
+  width: 70%;
+  margin-top: 50%;
   margin-left: 15%;
 }
+
 </style>

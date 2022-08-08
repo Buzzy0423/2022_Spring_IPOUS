@@ -66,7 +66,7 @@ export default defineComponent({
     const state = reactive({
       formData: {
         name_input: "",
-        sex_select: 2,
+        sex_select: "",
         age_input: "",
         tel_input: "",
         pic_upload: null,
