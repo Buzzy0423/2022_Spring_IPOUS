@@ -10,7 +10,7 @@
         </el-aside>
         <el-main>
           <info class="info"/>
-          <Record class="record"/>
+<!--          <Record class="record"/>-->
         </el-main>
       </el-container>
     </el-container>
@@ -40,7 +40,7 @@
 }
 
 .instruction {
-  height: 10%;
+  height: 20%;
   width: 70%;
   margin-top: 50%;
   margin-left: 15%;
