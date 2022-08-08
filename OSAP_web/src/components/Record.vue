@@ -24,7 +24,7 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="date" label="日期" width="150" />
         <el-table-column prop="model" label="模型" width="120" />
-        <el-table-column prop="address" label="图片" sortable width="180" align="center" header-align="center">
+        <el-table-column prop="address" label="记录" sortable width="180" align="center" header-align="center">
           <template #default ="scope">
             <el-image style="width: 100%; height: 100px" :src="scope.row.address" :preview-src-list="[scope.row.address]" :key="scope.row.id" preview-teleported="true" >
               <div slot="error" class="image-slot">
