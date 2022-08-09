@@ -22,11 +22,12 @@
     <!--  功能区-->
     <div style="margin: 15px">
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="date" label="日期" width="150" />
-        <el-table-column prop="model" label="模型" width="120" />
+        <el-table-column fixed prop="date" label="日期" width="150"/>
+        <el-table-column prop="model" label="模型" width="120"/>
         <el-table-column prop="address" label="记录" sortable width="180" align="center" header-align="center">
-          <template #default ="scope">
-            <el-image style="width: 100%; height: 100px" :src="scope.row.address" :preview-src-list="[scope.row.address]" :key="scope.row.id" preview-teleported="true" >
+          <template #default="scope">
+            <el-image style="width: 100%; height: 100px" :src="scope.row.address"
+                      :preview-src-list="[scope.row.address]" :key="scope.row.id" preview-teleported="true">
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
               </div>
@@ -43,9 +44,9 @@
       </el-table>
     </div>
     <div>
-      <el-dialog v-model = "dialogVisible" title="记录">
+      <el-dialog v-model="dialogVisible" title="记录">
         记录
-        <el-button link type="primary" size="small" @click = "certainInR" >
+        <el-button link type="primary" size="small" @click="certainInR">
 
         </el-button>
       </el-dialog>
@@ -55,13 +56,14 @@
 
 </template>
 
-<script>
+<script type="module">
+
 export default {
   name: "Record",
-  data(){
+  data() {
     return {
       dialogVisible: false,
-      options:[
+      options: [
         {
           value: 'Option1',
           label: 'Option1',
@@ -83,35 +85,35 @@ export default {
           label: 'Option5',
         },
       ],
-      tableData : [
+      tableData: [
         {
           date: '2022-7-21',
           model: '不知道',
-          address:require('D:\\springboot-vue\\springboot-vue-demo\\vue\\src\\assets\\a.png'),
+          address: new URL('../assets/a.png', import.meta.url).href
         },
         {
           date: '2022-7-21',
           model: '不知道',
-          address:require('D:\\springboot-vue\\springboot-vue-demo\\vue\\src\\assets\\a.png'),
+          address: new URL('../assets/a.png', import.meta.url).href
         },
         {
           date: '2022-7-21',
           model: '不知道',
-          address:require('D:\\springboot-vue\\springboot-vue-demo\\vue\\src\\assets\\a.png'),
+          address: new URL('../assets/a.png', import.meta.url).href
         },
         {
           date: '2022-7-21',
           model: '不知道',
-          address:require('D:\\springboot-vue\\springboot-vue-demo\\vue\\src\\assets\\a.png'),
+          address: new URL('../assets/a.png', import.meta.url).href
         },
       ]
     }
   },
-  methods : {
-    checkRecord(){
+  methods: {
+    checkRecord() {
       this.dialogVisible = true
     },
-    certainInR(){
+    certainInR() {
       this.dialogVisible = false
     }
   }

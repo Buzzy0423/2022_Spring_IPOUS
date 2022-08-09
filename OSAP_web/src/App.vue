@@ -10,12 +10,10 @@
         </el-aside>
         <el-main>
           <info class="info"/>
-<!--          <Record class="record"/>-->
+          <Record class="record"/>
         </el-main>
       </el-container>
     </el-container>
-
-
   </el-config-provider>
 </template>
 
