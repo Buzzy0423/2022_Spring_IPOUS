@@ -9,7 +9,8 @@
           <instruction class="instruction"/>
         </el-aside>
         <el-main>
-          <info class="info"/>
+          <!--          <info class="info"/>-->
+          <image_upload class="image_upload"/>
           <Record class="record"/>
         </el-main>
       </el-container>
@@ -30,16 +31,22 @@
   margin-left: 8%;
 }
 
+.image_upload {
+  width: 70%;
+  margin-top: 5%;
+  margin-left: 8%;
+}
+
 .record {
   height: 10%;
   width: 70%;
-  margin-top: 20%;
+  margin-top: 8%;
   margin-left: 8%;
 }
 
 .instruction {
-  height: 20%;
-  width: 70%;
+  height: 30%;
+  width: 60%;
   margin-top: 50%;
   margin-left: 15%;
 }
