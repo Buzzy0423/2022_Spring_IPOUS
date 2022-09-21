@@ -10,7 +10,7 @@
       action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
       multiple
       limit="10"
-      accept=".tif"
+      accept=".png"
       :list-type="'text'"
       :auto-upload="false"
       :on-exceed="handleExceed"
@@ -18,11 +18,11 @@
   >
     <el-icon class="el-icon--upload" size="60px"><upload-filled /></el-icon>
     <div class="el-upload__text">
-      Drop file here or <em>click to upload</em>
+      拖动图片至此处或点击选择图片
     </div>
     <template #tip>
       <div class="el-upload__tip" style="margin-top: 10px">
-        .tif files only, limit 10 images, new files will cover the old files
+        请上传最多十张png文件，新选择的文件会覆盖原有文件
         <!--          are there other types?-->
       </div>
     </template>

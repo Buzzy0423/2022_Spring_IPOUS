@@ -15,6 +15,9 @@
         />
       </el-select>
     </div>
+    <el-button type="primary" @click="demo">
+      确定
+    </el-button>
     <!--  题目-->
     <div style="margin: 15px">
       处理记录
@@ -65,48 +68,15 @@ export default {
       dialogVisible: false,
       options: [
         {
-          value: 'Option1',
-          label: 'Option1',
+          value: 'model1',
+          label: 'model1',
         },
         {
-          value: 'Option2',
-          label: 'Option2',
-        },
-        {
-          value: 'Option3',
-          label: 'Option3',
-        },
-        {
-          value: 'Option4',
-          label: 'Option4',
-        },
-        {
-          value: 'Option5',
-          label: 'Option5',
-        },
+          value: 'model2',
+          label: 'model2',
+        }
       ],
-      tableData: [
-        {
-          date: '2022-7-21',
-          model: '不知道',
-          address: new URL('../assets/a.png', import.meta.url).href
-        },
-        {
-          date: '2022-7-21',
-          model: '不知道',
-          address: new URL('../assets/a.png', import.meta.url).href
-        },
-        {
-          date: '2022-7-21',
-          model: '不知道',
-          address: new URL('../assets/a.png', import.meta.url).href
-        },
-        {
-          date: '2022-7-21',
-          model: '不知道',
-          address: new URL('../assets/a.png', import.meta.url).href
-        },
-      ]
+      tableData: []
     }
   },
   methods: {
@@ -115,6 +85,15 @@ export default {
     },
     certainInR() {
       this.dialogVisible = false
+    },
+    demo() {
+      this.tableData.push(
+          {
+            date: '2022-7-21',
+            model: 'model1',
+            address: new URL('../assets/03_gt_dir.png', import.meta.url).href
+          }
+      )
     }
   }
 }
