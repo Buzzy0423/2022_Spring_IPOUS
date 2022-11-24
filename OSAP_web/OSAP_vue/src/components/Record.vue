@@ -6,7 +6,7 @@
       模型选择
     </div>
     <div style="margin: 15px">
-      <el-select v-model="value" clearable placeholder="Select">
+      <el-select v-model="label" placeholder="Model" class="m-2">
         <el-option
             v-for="item in options"
             :key="item.value"
@@ -68,12 +68,8 @@ export default {
       dialogVisible: false,
       options: [
         {
-          value: 'model1',
-          label: 'model1',
-        },
-        {
-          value: 'model2',
-          label: 'model2',
+          value: 'model',
+          label: 'model',
         }
       ],
       tableData: []

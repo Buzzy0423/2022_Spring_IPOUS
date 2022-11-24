@@ -45,7 +45,6 @@
 }
 
 .instruction {
-  height: 30%;
   width: 60%;
   margin-top: 50%;
   margin-left: 15%;

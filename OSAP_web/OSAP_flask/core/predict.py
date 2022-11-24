@@ -12,3 +12,4 @@ torch.cuda.empty_cache()
 
 def predict(data, model):
     #TODO: 模型预测，结果储存到特定文件夹中
+    pass
