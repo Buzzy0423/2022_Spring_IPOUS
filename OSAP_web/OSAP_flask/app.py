@@ -7,8 +7,8 @@ import shutil
 import os
 import core.main
 
-UPLOAD_FOLDER = r'./uploads'
-ALLOWED_EXTENSIONS = {'png', 'tiff'}
+UPLOAD_FOLDER = r'data/unprocessed'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'tiff'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -40,21 +40,21 @@ def upload_file():
     if file and allowed_file(file.filename):
         src_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(src_path)
-        shutil.copy(src_path, './tmp/ct')
-        image_path = os.path.join('./tmp/ct', file.filename)
+        # shutil.copy(src_path, './tmp/ct')
+        # image_path = os.path.join('./tmp/ct', file.filename)
         # print(image_path)
-        pid, image_info = core.main.c_main(image_path, current_app.model)
-        return jsonify({'status': 1,
-                        'image_url': 'http://127.0.0.1:5003/tmp/image/' + pid,
-                        'draw_url': 'http://127.0.0.1:5003/tmp/draw/' + pid,
-                        'image_info': image_info
-                        })
+        # pid, image_info = core.main.c_main(image_path, current_app.model)
+        # return jsonify({'status': 1,
+        #                 'image_url': 'http://127.0.0.1:5003/tmp/image/' + pid,
+        #                 'draw_url': 'http://127.0.0.1:5003/tmp/draw/' + pid,
+        #                 'image_info': image_info
+        #                 })
 
-    return jsonify({'status': 0})
+    return 'Success!'
 
 
 # show photo
-@app.route('/tmp/<path:file>', methods=['GET'])
+@app.route('/show/<path:file>', methods=['GET'])
 def show_photo(file):
     # print(file)
     if file is None:
@@ -62,7 +62,7 @@ def show_photo(file):
         abort(401)
     else:
         try:
-            with open(f'tmp/{file}', "rb") as f:
+            with open(f'data/processed/{file}', "rb") as f:
                 image_data = f.read()
             response = make_response(image_data)
             response.headers['Content-Type'] = 'image/png'
@@ -75,7 +75,7 @@ def show_photo(file):
 @app.route("/download/<path:file>", methods=['GET'])
 def download_file(file):
     # 需要知道2个参数, 第1个参数是本地目录的path, 第2个参数是文件名(带扩展名)
-    return send_from_directory('data', file, as_attachment=True)
+    return send_from_directory('data/processed', file, as_attachment=True)
 
 
 if __name__ == '__main__':
