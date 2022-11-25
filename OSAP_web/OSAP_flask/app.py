@@ -34,23 +34,17 @@ def allowed_file(filename):
 
 
 @app.route('/upload', methods=['GET', 'POST'])
-def upload_file():
+def upload_file(model_name):
     file = request.files['file']
     print(datetime.datetime.now(), file.filename)
     if file and allowed_file(file.filename):
         src_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(src_path)
         # shutil.copy(src_path, './tmp/ct')
-        # image_path = os.path.join('./tmp/ct', file.filename)
-        # print(image_path)
-        # pid, image_info = core.main.c_main(image_path, current_app.model)
-        # return jsonify({'status': 1,
-        #                 'image_url': 'http://127.0.0.1:5003/tmp/image/' + pid,
-        #                 'draw_url': 'http://127.0.0.1:5003/tmp/draw/' + pid,
-        #                 'image_info': image_info
-        #                 })
-
-    return 'Success!'
+        image_path = os.path.join('data/unprocessed', file.filename)
+        if core.main.process(image_path, model_name):
+            return 'Success!'
+    return 'Failed!'
 
 
 # show photo
