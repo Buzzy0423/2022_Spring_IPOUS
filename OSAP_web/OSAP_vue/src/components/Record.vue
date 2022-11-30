@@ -15,7 +15,7 @@
         />
       </el-select>
     </div>
-    <el-button type="primary" @click="demo">
+    <el-button type="primary" @click="upload">
       确定
     </el-button>
     <!--  题目-->
@@ -72,7 +72,8 @@ export default {
           label: 'model',
         }
       ],
-      tableData: []
+      tableData: [],
+      Filename:''
     }
   },
   methods: {
@@ -90,6 +91,40 @@ export default {
             address: new URL('../assets/03_gt_dir.png', import.meta.url).href
           }
       )
+    },
+    load(){
+      request.get(":5003/show/<path:file>").then(res =>{
+        if (res){
+          console.log(res);
+          let image = window.URL.createObjectURL(res)
+          this.tableData.push(
+              {
+                data:"something",
+                model:"something",
+                image:image
+              }
+          )
+        }
+      })
+    },
+    upload(){
+      this.Filename = "something"
+      request.post(":5003/upload", this.Filename).then(res => {
+          console.log(res)
+          if (res == 'Success!'){
+            this.$message({
+              type : "success",
+              message : "上传图片成功"
+            })
+            this.load();
+          }else {
+            this.$message({
+              // "调predict图片";
+            })
+            this.load();
+          }
+        })
+
     }
   }
 }

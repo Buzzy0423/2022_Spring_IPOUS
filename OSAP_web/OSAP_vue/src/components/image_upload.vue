@@ -3,7 +3,7 @@
       <template #header>
         <span style="margin-left: -86%; font-weight: bold">眼底图片上传</span>
       </template>
-  <el-upload
+      <el-upload
       v-model:file-list="fileList"
       class="upload"
       drag
@@ -15,18 +15,18 @@
       :auto-upload="false"
       :on-exceed="handleExceed"
       :with-credentials="true"
-  >
-    <el-icon class="el-icon--upload" size="60px"><upload-filled /></el-icon>
-    <div class="el-upload__text">
-      拖动图片至此处或点击选择图片
-    </div>
-    <template #tip>
-      <div class="el-upload__tip" style="margin-top: 10px">
-        请上传最多十张png文件，新选择的文件会覆盖原有文件
-        <!--          are there other types?-->
-      </div>
-    </template>
-  </el-upload>
+      >
+        <el-icon class="el-icon--upload" size="60px"><upload-filled /></el-icon>
+        <div class="el-upload__text">
+          拖动图片至此处或点击选择图片
+        </div>
+        <template #tip>
+          <div class="el-upload__tip" style="margin-top: 10px">
+            请上传最多十张png文件，新选择的文件会覆盖原有文件
+            <!--          are there other types?-->
+          </div>
+        </template>
+      </el-upload>
     </el-card>
 </template>
 

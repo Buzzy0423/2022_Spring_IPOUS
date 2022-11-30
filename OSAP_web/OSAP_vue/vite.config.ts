@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+
 import Unocss from 'unocss/vite'
 import {
   presetAttributify,
@@ -62,4 +63,5 @@ export default defineConfig({
       ]
     }),
   ],
+  base: './'
 })

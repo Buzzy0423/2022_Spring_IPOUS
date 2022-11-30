@@ -33,17 +33,19 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload/<model_name>', methods=['GET', 'POST'])
 def upload_file(model_name):
     file = request.files['file']
     print(datetime.datetime.now(), file.filename)
+    msg = ''
     if file and allowed_file(file.filename):
         src_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(src_path)
-        # shutil.copy(src_path, './tmp/ct')
-        image_path = os.path.join('data/unprocessed', file.filename)
-        if core.main.process(image_path, model_name):
-            return 'Success!'
+        shutil.copy(src_path, 'data/processed')
+        # msg = core.main.process(src_path, model_name)
+        # if msg == 'Success':
+        return 'Success!'
+    app.logger.info("Failed to deal with image!\n", msg)
     return 'Failed!'
 
 

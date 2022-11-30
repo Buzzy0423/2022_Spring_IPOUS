@@ -1,5 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import axios from "axios";
+import * as ElIconModules from '@element-plus/icons-vue'
 
 // import "~/styles/element/index.scss";
 
@@ -17,4 +19,8 @@ import "element-plus/theme-chalk/src/message.scss"
 
 const app = createApp(App);
 // app.use(ElementPlus);
+for(let iconName in ElIconModules){
+    // @ts-ignore
+    app.component(iconName,ElIconModules[iconName])
+}
 app.mount("#app");
