@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import axios from "axios";
 import * as ElIconModules from '@element-plus/icons-vue'
 
 // import "~/styles/element/index.scss";

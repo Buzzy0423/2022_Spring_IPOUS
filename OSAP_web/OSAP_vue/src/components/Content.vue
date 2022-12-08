@@ -54,7 +54,7 @@
         />
       </el-select>
     </div>
-    <el-button type="primary" :disabled="fileList.length < 1" @click.native="upload()">
+    <el-button type="primary" :disabled="fileList.length < 1" @click="uploadImage">
       确定
     </el-button>
     <!--  题目-->
@@ -100,6 +100,7 @@
 <script>
 import {ElMessage, ElMessageBox} from 'element-plus'
 import axios from "axios";
+axios.defaults.baseURL = 'http://127.0.0.1:5003'
 
 export default {
   name: "Record",
@@ -146,29 +147,27 @@ export default {
       )
     },
     load(filename) {
-      request.get(":5003/show/<path:file>" , filename).then(res => {
+      axios.get("show/"+filename).then(res => {
         if (res) {
           console.log(res);
-          let image = window.URL.createObjectURL(res)
           this.tableData.push(
               {
-                data: "something",
+                date: "something",
                 model: "something",
-                image: image
+                image: res.data
               }
           )
         }
       })
     },
-    upload() {
-      console.log('1')
+    uploadImage() {
       for (let file of this.fileList){
         this.uploadSingle(file);
       }
       this.fileList = []
     },
     download(){
-      request.get("/download/<path:file>").then(res =>{
+      axios.get("download/<path:file>").then(res =>{
         const remainder = document.createElement("remainder"),
               filename = "something",
               url = window.URL.createObjectURL(res.blob());
@@ -176,14 +175,13 @@ export default {
         remainder.download = filename;
         remainder.click();
         window.URL.revokeObjectURL(url)
-
       })
     },
     uploadSingle(file){
       let fileParam = new FormData();
       fileParam.append("file", file["raw"]);
       fileParam.append("fileName", file["name"]);
-      axios.post("127.0.0.1:5000/upload/model1", fileParam).then(
+      axios.post('upload/model1',fileParam).then(
           (response) =>{
             console.log(response)
             this.load(file["name"])
