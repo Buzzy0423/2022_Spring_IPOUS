@@ -54,7 +54,7 @@
         />
       </el-select>
     </div>
-    <el-button type="primary" :disabled="fileList.length < 1" @click="upload">
+    <el-button type="primary" :disabled="fileList.length < 1" @click.native="upload()">
       确定
     </el-button>
     <!--  题目-->
@@ -80,7 +80,7 @@
 
         <el-table-column fixed="right" label="操作" width="300">
           <template #default>
-            <el-button link type="danger" size="small">下载</el-button>
+            <el-button link type="danger" size="small" @click = "download">下载</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -145,8 +145,8 @@ export default {
           }
       )
     },
-    load() {
-      request.get(":5003/show/<path:file>").then(res => {
+    load(filename) {
+      request.get(":5003/show/<path:file>" , filename).then(res => {
         if (res) {
           console.log(res);
           let image = window.URL.createObjectURL(res)
@@ -161,18 +161,32 @@ export default {
       })
     },
     upload() {
+      console.log('1')
       for (let file of this.fileList){
         this.uploadSingle(file);
       }
       this.fileList = []
     },
+    download(){
+      request.get("/download/<path:file>").then(res =>{
+        const remainder = document.createElement("remainder"),
+              filename = "something",
+              url = window.URL.createObjectURL(res.blob());
+        remainder.herf = url;
+        remainder.download = filename;
+        remainder.click();
+        window.URL.revokeObjectURL(url)
+
+      })
+    },
     uploadSingle(file){
       let fileParam = new FormData();
       fileParam.append("file", file["raw"]);
       fileParam.append("fileName", file["name"]);
-      axios.post("127.0.0.1:5003/upload/model1", fileParam).then(
+      axios.post("127.0.0.1:5000/upload/model1", fileParam).then(
           (response) =>{
             console.log(response)
+            this.load(file["name"])
           }
       )
     }
