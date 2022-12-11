@@ -30,6 +30,7 @@ declare module '@vue/runtime-core' {
     Image_upload: typeof import('./components/image_upload.vue')['default']
     Info: typeof import('./components/info.vue')['default']
     Instruction: typeof import('./components/instruction.vue')['default']
+    Loading: typeof import('element-plus/es')['ElLoadingDirective']
     Record: typeof import('./components/Record.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

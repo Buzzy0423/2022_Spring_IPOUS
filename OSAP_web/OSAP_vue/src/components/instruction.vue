@@ -3,7 +3,7 @@
     <template #header>
       <span style="margin-left: -72%; font-weight: bold">使用指南</span>
     </template>
-    <div style="height: 150px; margin-left: 15px; margin-top: 20px">
+    <div style="height: 180px; margin-left: 15px; margin-top: 15px">
       <el-steps direction="vertical" active="3">
         <el-step title="上传图像"/>
         <el-step title="选择模型"/>

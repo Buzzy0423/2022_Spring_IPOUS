@@ -1,6 +1,7 @@
 <template>
   <div class="image_upload">
-    <el-card style="border-radius: 8px" shadow="never">
+    <el-card style="border-radius: 8px; width: 100%" shadow="never" v-loading="loading"
+             element-loading-text="正在处理图片，请耐心等待">
       <template #header>
         <span style="margin-left: -86%; font-weight: bold">眼底图片上传</span>
       </template>
@@ -35,11 +36,8 @@
     </el-card>
   </div>
 
-  <div>
-    <h6>{{this.fileList}}</h6>
-  </div>
 
-  <div style=" padding: 15px">
+  <div style=" padding: 15px" class="record">
     <!--  题目-->
     <div style="margin: 15px">
       模型选择
@@ -62,37 +60,32 @@
       处理记录
     </div>
     <!--  功能区-->
-    <div style="margin: 15px">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="date" label="日期" width="150"/>
-        <el-table-column prop="model" label="模型" width="120"/>
-        <el-table-column prop="address" label="记录" sortable width="180" align="center" header-align="center">
-          <template #default="scope">
-            <el-image style="width: 100%; height: 100px" :src="scope.row.address"
-                      :preview-src-list="[scope.row.address]" :key="scope.row.id" preview-teleported="true">
-              <div slot="error" class="image-slot">
-                <i class="el-icon-picture-outline"></i>
-              </div>
-            </el-image>
-          </template>
-        </el-table-column>
+    <el-table :data="tableData">
+      <el-table-column fixed prop="date" label="上传时间" align="center" header-align="center"/>
+      <el-table-column prop="model" label="模型" align="center" header-align="center"/>
+      <el-table-column prop="name" label="图片名" align="center" header-align="center"/>
+      <el-table-column prop="address" label="结果预览" align="center" header-align="center">
+        <template #default="scope">
+          <el-image :src="scope.row.address"
+                    :preview-src-list="[scope.row.address]" :key="scope.row.id" preview-teleported="true">
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline"></i>
+            </div>
+          </el-image>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" align="center" header-align="center">
+        <template #default="scope">
+          <el-button type="primary" @click="download(scope.row.name)">下载</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog v-model="dialogVisible" title="记录">
+      记录
+      <el-button link type="primary" size="small" @click="certainInR">
 
-
-        <el-table-column fixed="right" label="操作" width="300">
-          <template #default>
-            <el-button link type="danger" size="small" @click = "download">下载</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div>
-      <el-dialog v-model="dialogVisible" title="记录">
-        记录
-        <el-button link type="primary" size="small" @click="certainInR">
-
-        </el-button>
-      </el-dialog>
-    </div>
+      </el-button>
+    </el-dialog>
 
   </div>
 </template>
@@ -100,6 +93,7 @@
 <script>
 import {ElMessage, ElMessageBox} from 'element-plus'
 import axios from "axios";
+
 axios.defaults.baseURL = 'http://127.0.0.1:5003'
 
 export default {
@@ -107,7 +101,11 @@ export default {
   data() {
     return {
       fileList: [],
+      nowtime: '',
       dialogVisible: false,
+      loading: false,
+      resCount: 0,
+      resNum: 0,
       options: [
         {
           value: 'model',
@@ -137,54 +135,72 @@ export default {
     certainInR() {
       this.dialogVisible = false
     },
-    demo() {
-      this.tableData.push(
-          {
-            date: '2022-7-21',
-            model: 'model1',
-            address: new URL('../assets/03_gt_dir.png', import.meta.url).href
-          }
-      )
-    },
     load(filename) {
-      axios.get("show/"+filename).then(res => {
-        if (res) {
+      axios.get("show/" + filename, {responseType: "blob"}).then(res => {
+        this.resNum += 1
+        console.log(this.resNum + " " + this.resCount)
+        if (this.resNum === this.resCount) {
+          this.loading = false
+          this.resNum = 0
+        }
+        let year = new Date().getFullYear()
+        let month = new Date().getMonth() + 1
+        let day = new Date().getDate()
+        month = month < 10 ? '0' + month : month
+        day = day < 10 ? '0' + day : day
+        let hour = new Date().getHours()
+        let minuite = new Date().getMinutes()
+        hour = hour < 10 ? '0' + hour : hour
+        minuite = minuite < 10 ? '0' + minuite : minuite
+        this.nowtime = year + '/' + month + '/' + day + '  ' + hour + ':' + minuite
+        if (res.status === 200) {
+          const im = window.URL.createObjectURL(res.data)
           console.log(res);
           this.tableData.push(
               {
-                date: "something",
-                model: "something",
-                image: res.data
+                date: this.nowtime,
+                model: "AFRN",
+                name: filename,
+                address: im
               }
           )
         }
       })
     },
     uploadImage() {
-      for (let file of this.fileList){
+      this.loading = true
+      this.resCount = this.fileList.length
+      for (let file of this.fileList) {
         this.uploadSingle(file);
       }
       this.fileList = []
     },
-    download(){
-      axios.get("download/<path:file>").then(res =>{
-        const remainder = document.createElement("remainder"),
-              filename = "something",
-              url = window.URL.createObjectURL(res.blob());
-        remainder.herf = url;
-        remainder.download = filename;
-        remainder.click();
-        window.URL.revokeObjectURL(url)
+    download(filename) {
+      axios.get("download/" + filename, {responseType: "blob"}).then(res => {
+        const url = window.URL.createObjectURL(res.data)
+        let link = document.createElement("a");
+        link.style.display = "none";
+        link.href = url;
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        if (res.status === 200) {
+          ElMessage.success("下载成功")
+        } else {
+          ElMessage.error("下载失败，请重试")
+        }
       })
     },
-    uploadSingle(file){
+    uploadSingle(file) {
       let fileParam = new FormData();
       fileParam.append("file", file["raw"]);
       fileParam.append("fileName", file["name"]);
-      axios.post('upload/model1',fileParam).then(
-          (response) =>{
+      axios.post('upload/model1', fileParam).then(
+          (response) => {
             console.log(response)
-            this.load(file["name"])
+            this.load(response.data.id)
           }
       )
     }
@@ -193,6 +209,16 @@ export default {
 </script>
 
 <style scoped>
+.image_upload {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.record {
+  width: 80%;
+
+}
 
 </style>

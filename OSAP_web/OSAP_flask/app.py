@@ -6,12 +6,14 @@ import numpy as np
 import shutil
 import os
 import core.main
+from time import sleep
 
-UPLOAD_FOLDER = r'data/unprocessed'
+UPLOAD_FOLDER = os.path.join('data', 'unprocessed')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'tiff'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 
 # 添加header解决跨域
@@ -36,17 +38,30 @@ def allowed_file(filename):
 @app.route('/upload/<model_name>', methods=['GET', 'POST'])
 def upload_file(model_name):
     file = request.files['file']
-    print(datetime.datetime.now(), file.filename)
+    # print(datetime.datetime.now(), file.filename)
+    # print(os.path.splitext(file.filename)[1])
     msg = ''
     if file and allowed_file(file.filename):
-        src_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file_id = find_next()
+        file_name = str(file_id) + os.path.splitext(file.filename)[1]
+        src_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
         file.save(src_path)
         shutil.copy(src_path, 'data/processed')
         # msg = core.main.process(src_path, model_name)
         # if msg == 'Success':
-        return 'Success!'
+        return jsonify({'id':file_name})
     app.logger.info("Failed to deal with image!\n", msg)
-    return 'Failed!'
+    return jsonify({'id':file_name})
+
+def find_next():
+    file_list = os.listdir(UPLOAD_FOLDER)
+    max = -1
+    for f in file_list:
+        if not f.startswith('.'):
+            id = int(os.path.splitext(f)[0])
+            if id > max:
+                max = id
+    return max + 1
 
 
 # show photo
