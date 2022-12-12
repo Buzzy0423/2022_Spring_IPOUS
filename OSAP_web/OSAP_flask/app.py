@@ -1,12 +1,8 @@
-from flask import *
-import datetime
-import logging
-import torch
-import numpy as np
-import shutil
 import os
+
+from flask import *
+
 from core.main import process
-from time import sleep
 
 UPLOAD_FOLDER = os.path.join('data', 'unprocessed')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'tiff'}

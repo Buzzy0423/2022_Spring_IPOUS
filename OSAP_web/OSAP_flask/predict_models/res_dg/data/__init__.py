@@ -12,7 +12,7 @@ See our template dataset class 'template_dataset.py' for more details.
 """
 import importlib
 import torch.utils.data
-from res_dg.data.base_dataset import BaseDataset
+from predict_models.res_dg.data.base_dataset import BaseDataset
 
 
 def find_dataset_using_name(dataset_name):

@@ -9,7 +9,7 @@ import torch
 import itertools
 from .base_model import BaseModel
 from . import networks
-from res_dg.models.guided_filter_pytorch.HFC_filter import HFCFilter
+from predict_models.res_dg.models.guided_filter_pytorch.HFC_filter import HFCFilter
 
 def mul_mask(image, mask):
     return (image + 1) * mask - 1

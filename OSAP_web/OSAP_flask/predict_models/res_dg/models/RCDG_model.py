@@ -9,7 +9,7 @@ import torch
 import itertools
 from .base_model import BaseModel
 from . import networks
-from res_dg.models.guided_filter_pytorch.HFC_filter import HFCFilter
+from predict_models.res_dg.models.guided_filter_pytorch.HFC_filter import HFCFilter
 
 
 def hfc_mul_mask(hfc_filter, image, mask):
@@ -71,7 +71,7 @@ class RCDGModel(BaseModel):
         self.visual_names_train = ['real_SA', 'real_SAH', 'fake_SH', 'fake_SH_idt',
                                  'fake_SB', 'fake_SBH', 'real_SB', 'real_SBH',]
         self.visual_names_test = ['real_TA', 'fake_TH', 'fake_TB', 'fake_TBH', 'real_TAH']
-        # specify the models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
+        # specify the predict_models you want to save to the disk. The training/test scripts will call <BaseModel.save_networks> and <BaseModel.load_networks>
         if self.isTrain:
             self.model_names = ['GH', 'GF']
             self.visual_names = self.visual_names_train
@@ -148,7 +148,7 @@ class RCDGModel(BaseModel):
             self.compute_visuals()
 
     def train(self):
-        """Make models eval mode during test time"""
+        """Make predict_models eval mode during test time"""
         self.visual_names = self.visual_names_train
         for name in self.model_names:
             if isinstance(name, str):

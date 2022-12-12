@@ -6,7 +6,7 @@ It will load a saved model from '--checkpoints_dir' and save the results to '--r
 It first creates model and dataset given the option. It will hard-code some parameters.
 It then runs inference for '--num_test' images and save results to an HTML file.
 
-Example (You need to train models first or download pre-trained models from our website):
+Example (You need to train predict_models first or download pre-trained predict_models from our website):
     Test a CycleGAN model (both sides):
         python test.py --dataroot ./datasets/maps --name maps_cyclegan --model cycle_gan
 
@@ -27,11 +27,11 @@ See training and test tips at: https://github.com/junyanz/pytorch-CycleGAN-and-p
 See frequently asked questions at: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/docs/qa.md
 """
 import os
-from res_dg.options.test_options import TestOptions
-from res_dg.data import create_dataset
-from res_dg.models import create_model
-from res_dg.util.visualizer import save_images
-from res_dg.util import html
+from options.test_options import TestOptions
+from data import create_dataset
+from models import create_model
+from util.visualizer import save_images
+from util import html
 
 if __name__ == '__main__':
     opt = TestOptions().parse()  # get test options

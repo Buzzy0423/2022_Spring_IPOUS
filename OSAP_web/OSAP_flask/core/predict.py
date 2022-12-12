@@ -4,10 +4,10 @@ import cv2
 import torch
 # import model run in server
 import numpy as np
-# from models.res.models import arcnet_model
-from models.res.options import test_options
+# from predict_models.res.predict_models import arcnet_model
+from predict_models.res.options import test_options
 
-# from models.res.test import test
+# from predict_models.res.test import test
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 torch.set_num_threads(4)
@@ -20,10 +20,10 @@ def predict(model):
     # test(file_path, '00_low_quality_dir')
     # opt = test_options.TestOptions()
     os.system(
-        'python ../models/res_dg/test.py --dataroot ../data/dataset/'
+        'python predict_models/res_dg/test.py --dataroot ./data/dataset/'
         ' --name RCDG_drive --model RCDG --dataset_mode cataract_guide_padding --eval')
     # os.system(
-    #     'python ../models/res/test.py --dataroot ../data/unprocessed/'
+    #     'python ../predict_models/res/test.py --dataroot ../data/unprocessed/'
     #     ' --name arcnet --model arcnet --dataset_mode cataract_guide_padding --eval')
 
     # model = arcnet_model.ArcNetModel()
