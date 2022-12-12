@@ -2,7 +2,7 @@ import torch
 import itertools
 from .base_model import BaseModel
 from . import networks
-from predict_models.guided_filter_pytorch.sobel_filter import ThreeSobelFilter, OneSobelFilter
+from models.guided_filter_pytorch.sobel_filter import ThreeSobelFilter, OneSobelFilter
 from data.base_dataset import TensorToGrayTensor
 
 class PixDASobelModel(BaseModel):

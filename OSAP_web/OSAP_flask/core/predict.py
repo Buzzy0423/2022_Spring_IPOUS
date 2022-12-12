@@ -1,13 +1,14 @@
 import os
-import sys
-import cv2
-import torch
-# import model run in server
-import numpy as np
-# from predict_models.res.predict_models import arcnet_model
-from predict_models.res.options import test_options
 
-# from predict_models.res.test import test
+import torch
+
+# import model run in server
+# from predict_models.res_dg.models.RCDG_model import RCDGModel
+from predict_models.res_dg.test import test
+
+import argparse
+
+# from models.res.test import test
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 torch.set_num_threads(4)
@@ -19,16 +20,24 @@ def predict(model):
     # TODO: 模型预测，结果储存到特定文件夹中
     # test(file_path, '00_low_quality_dir')
     # opt = test_options.TestOptions()
-    os.system(
-        'python predict_models/res_dg/test.py --dataroot ./data/dataset/'
-        ' --name RCDG_drive --model RCDG --dataset_mode cataract_guide_padding --eval')
     # os.system(
-    #     'python ../predict_models/res/test.py --dataroot ../data/unprocessed/'
+    #     'python ../models/res_dg/test.py --dataroot ../data/dataset/'
+    #     ' --name RCDG_drive --model RCDG --dataset_mode cataract_guide_padding --eval')
+    # os.system(
+    #     'python ../models/res/test.py --dataroot ../data/unprocessed/'
     #     ' --name arcnet --model arcnet --dataset_mode cataract_guide_padding --eval')
 
-    # model = arcnet_model.ArcNetModel()
+    # dic = dict()
+    # dic['dataroot'] = '../data/dataset'
+    # dic['name'] = 'RCDG_drive'
+    # dic['model'] = 'RCDG'
+    # dic['dataset_mode'] = 'cataract_guide_padding'
+    # dic['eval'] = True
+    # parser = argparse.ArgumentParser()
+    test()
+
+    # model = RCDGModel()
     # model.set_input()
     # model.test()
 
 
-# predict('arcnet')

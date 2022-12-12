@@ -1,9 +1,9 @@
 import argparse
 import os
-from predict_models.res_dg.util import util
+from  predict_models.res_dg.util import util
 import torch
 import predict_models.res_dg.models as models
-import data
+from predict_models.res_dg import data
 
 
 class BaseOptions():
@@ -20,14 +20,15 @@ class BaseOptions():
     def initialize(self, parser):
         """Define the common options that are used in both training and test."""
         # basic parameters
-        parser.add_argument('--dataroot', required=True,
+        parser.add_argument('--dataroot', default='../data/dataset',
                             help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
-        parser.add_argument('--name', type=str, default='experiment_name',
-                            help='name of the experiment. It decides where to store samples and predict_models')
+
+        parser.add_argument('--name', type=str, default='RCDG_drive',
+                            help='name of the experiment. It decides where to store samples and models')
         parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
-        parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='predict_models are saved here')
+        parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
         # model parameters
-        parser.add_argument('--model', type=str, default='cycle_gan',
+        parser.add_argument('--model', type=str, default='RCDG',
                             help='chooses which model to use. [cycle_gan | pix2pix | test | colorization]')
         parser.add_argument('--input_nc', type=int, default=3,
                             help='# of input image channels: 3 for RGB and 1 for grayscale')
@@ -51,7 +52,7 @@ class BaseOptions():
                             help='scaling factor for normal, xavier and orthogonal.')
         parser.add_argument('--no_dropout', action='store_true', help='no dropout for the generator')
         # dataset parameters
-        parser.add_argument('--dataset_mode', type=str, default='unaligned',
+        parser.add_argument('--dataset_mode', type=str, default='cataract_guide_padding',
                             help='chooses how datasets are loaded. [unaligned | aligned | single | colorization]')
         parser.add_argument('--direction', type=str, default='AtoB', help='AtoB or BtoA')
         parser.add_argument('--serial_batches', action='store_true',
@@ -73,7 +74,7 @@ class BaseOptions():
         parser.add_argument('--epoch', type=str, default='latest',
                             help='which epoch to load? set to latest to use latest cached model')
         parser.add_argument('--load_iter', type=int, default='0',
-                            help='which iteration to load? if load_iter > 0, the code will load predict_models by iter_[load_iter]; otherwise, the code will load predict_models by [epoch]')
+                            help='which iteration to load? if load_iter > 0, the code will load models by iter_[load_iter]; otherwise, the code will load models by [epoch]')
         parser.add_argument('--verbose', action='store_true', help='if specified, print more debugging information')
         parser.add_argument('--suffix', default='', type=str,
                             help='customized suffix: opt.name = opt.name + suffix: e.g., {model}_{netG}_size{load_size}')
@@ -98,16 +99,19 @@ class BaseOptions():
             parser = self.initialize(parser)
 
         # get the basic options
+
         opt, _ = parser.parse_known_args()
 
         # modify model-related parser options
-        model_name = opt.model
+
+        model_name = 'RCDG'
+
         model_option_setter = models.get_option_setter(model_name)
         parser = model_option_setter(parser, self.isTrain)
         opt, _ = parser.parse_known_args()  # parse again with new defaults
 
         # modify dataset-related parser options
-        dataset_name = opt.dataset_mode
+        dataset_name = 'cataract_guide_padding'
         dataset_option_setter = data.get_option_setter(dataset_name)
         parser = dataset_option_setter(parser, self.isTrain)
 
