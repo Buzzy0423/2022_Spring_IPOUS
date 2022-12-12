@@ -36,6 +36,9 @@
     </el-card>
   </div>
 
+  <div>
+
+  </div>
 
   <div style=" padding: 15px" class="record">
     <!--  题目-->
@@ -43,7 +46,7 @@
       模型选择
     </div>
     <div style="margin: 15px">
-      <el-select v-model="label" placeholder="Model" class="m-2">
+      <el-select v-model="model" placeholder="选择模型" class="select">
         <el-option
             v-for="item in options"
             :key="item.value"
@@ -52,8 +55,8 @@
         />
       </el-select>
     </div>
-    <el-button type="primary" :disabled="fileList.length < 1" @click="uploadImage">
-      确定
+    <el-button type="primary" :disabled="fileList.length < 1 || model === ''" @click="uploadImage">
+      上传图片
     </el-button>
     <!--  题目-->
     <div style="margin: 15px">
@@ -91,15 +94,16 @@
 </template>
 
 <script>
+import {ref} from "vue";
 import {ElMessage, ElMessageBox} from 'element-plus'
 import axios from "axios";
 
 axios.defaults.baseURL = 'http://127.0.0.1:5003'
 
 export default {
-  name: "Record",
   data() {
     return {
+      model: '',
       fileList: [],
       nowtime: '',
       dialogVisible: false,
@@ -108,8 +112,8 @@ export default {
       resNum: 0,
       options: [
         {
-          value: 'model',
-          label: 'model',
+          value: 'AFRN',
+          label: 'AFRN',
         }
       ],
       tableData: [],
@@ -197,7 +201,7 @@ export default {
       let fileParam = new FormData();
       fileParam.append("file", file["raw"]);
       fileParam.append("fileName", file["name"]);
-      axios.post('upload/model1', fileParam).then(
+      axios.post('upload/' + this.model, fileParam).then(
           (response) => {
             console.log(response)
             this.load(response.data.id)

@@ -27,14 +27,12 @@ declare module '@vue/runtime-core' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElUpload: typeof import('element-plus/es')['ElUpload']
-    Image_upload: typeof import('./components/image_upload.vue')['default']
     Info: typeof import('./components/info.vue')['default']
     Instruction: typeof import('./components/instruction.vue')['default']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     Record: typeof import('./components/Record.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Test: typeof import('./components/test.vue')['default']
   }
 }
 
