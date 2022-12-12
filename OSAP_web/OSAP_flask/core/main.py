@@ -17,11 +17,11 @@ def process(file_path, model_name):
     image.save('data/dataset/target/image1.png')
     preprocess('data/dataset/target/image1.png', 'data/dataset/target_mask/image1.png')
     predict('RCDG_model')
-    img = Image.open('core/results/RCDG_drive/test_latest/images/image1_fake_TB.png')
+    img = Image.open('results/RCDG_drive/test_latest/images/image1_fake_TB.png')
     img = img = img.resize((512, 512))
     img.save(str(f'data/processed/{file_name}.png'))
-    os.remove('data/dataset/target/image1.png')
-    os.remove('data/dataset/target_mask/image1.png')
+    # os.remove('data/dataset/target/image1.png')
+    # os.remove('data/dataset/target_mask/image1.png')
 
     return 'Success'
 

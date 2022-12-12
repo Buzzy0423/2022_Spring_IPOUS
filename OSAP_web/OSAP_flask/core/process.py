@@ -4,7 +4,6 @@ import cv2
 import numpy as np
 from scipy import ndimage
 
-
 def preprocess(image_path, save_path):
     """
 
