@@ -5,7 +5,7 @@ import torch
 import numpy as np
 import shutil
 import os
-import core.main
+from core.main import process
 from time import sleep
 
 UPLOAD_FOLDER = os.path.join('data', 'unprocessed')
@@ -46,7 +46,8 @@ def upload_file(model_name):
         file_name = str(file_id) + os.path.splitext(file.filename)[1]
         src_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
         file.save(src_path)
-        shutil.copy(src_path, 'data/processed')
+        process(src_path, model_name)
+        # shutil.copy(src_path, 'data/processed')
         # msg = core.main.process(src_path, model_name)
         # if msg == 'Success':
         return jsonify({'id':file_name})

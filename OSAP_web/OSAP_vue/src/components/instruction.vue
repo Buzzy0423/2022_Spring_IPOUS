@@ -1,7 +1,7 @@
 <template>
   <el-card class="inst" style="border-radius: 8px" shadow="never">
     <template #header>
-      <span style="margin-left: -72%; font-weight: bold">使用指南</span>
+      <span style="margin-left: -50%; font-weight: bold">使用指南</span>
     </template>
     <div style="height: 180px; margin-left: 15px; margin-top: 15px">
       <el-steps direction="vertical" active="3">

@@ -1,8 +1,8 @@
+import os
+
 from core.predict import predict
 from core.process import preprocess
 from PIL import Image
-import cv2
-import traceback
 
 
 def process(file_path, model_name):
@@ -11,19 +11,21 @@ def process(file_path, model_name):
     :param file_path: the path of cataract fundus image
     :param model_name: the model you want to use
     """
-    try: 
-        image = Image.open(file_path)
-        image_name = file_path.split('/')[-1].split('.')[0]
-        processed_image = preprocess(image)
-        restored_image = predict(processed_image, model_name)  # need returning a numpy array
-        restored_image = Image.fromarray(restored_image)
-        save_path = str(f'./data/{image_name}.png')
-        restored_image.save(save_path)
-        return "Success"
-    except Exception as e:
-        return traceback.format_exception()
-    
+    # TODO: fill this
+    image = Image.open(file_path)
+    file_name = file_path.split('/')[-1].split('.')[0]
+    image.save('../data/dataset/target/image1.png')
+    preprocess('../data/dataset/target/image1.png', '../data/dataset/target_mask/image1.png')
+    predict('RCDG_model')
+    img = Image.open('./results/RCDG_drive/test_latest/images/image1_fake_TB.png')
+    img.resize((512, 512))
+    img.save(str(f'../data/processed/{file_name}.png'))
+    os.remove('../data/dataset/target/image1.png')
+    os.remove('../data/dataset/target_mask/image1.png')
+
+    return 'Success'
 
 
 if __name__ == '__main__':
-    pass
+    process('../data/unprocessed/test.jpg', "RCDG_model")
+    # image = Image.open('../data/unprocessed/test.jpg')

@@ -23,7 +23,7 @@
 }
 
 .instruction {
-  width: 50%;
+  width: 60%;
   height: 45%;
   margin-top: 50%;
   margin-left: 15%;
