@@ -1,4 +1,5 @@
 <template>
+
   <el-card class="inst" style="border-radius: 8px" shadow="never">
     <template #header>
       <span style="margin-left: -50%; font-weight: bold">使用指南</span>

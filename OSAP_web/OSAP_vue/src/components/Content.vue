@@ -66,11 +66,21 @@
     <el-table :data="tableData">
       <el-table-column fixed prop="date" label="上传时间" align="center" header-align="center"/>
       <el-table-column prop="model" label="模型" align="center" header-align="center"/>
-      <el-table-column prop="name" label="图片名" align="center" header-align="center"/>
-      <el-table-column prop="address" label="结果预览" align="center" header-align="center">
+<!--      <el-table-column prop="name" label="图片名" align="center" header-align="center"/>-->
+      <el-table-column prop="raw_image" label="原始图像" align="center" header-align="center">
         <template #default="scope">
-          <el-image :src="scope.row.address"
-                    :preview-src-list="[scope.row.address]" :key="scope.row.id" preview-teleported="true">
+          <el-image :src="scope.row.raw_image"
+                    :preview-src-list="[scope.row.raw_image]" preview-teleported="true">
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline"></i>
+            </div>
+          </el-image>
+        </template>
+      </el-table-column>
+      <el-table-column prop="processed_image" label="结果预览" align="center" header-align="center">
+        <template #default="scope">
+          <el-image :src="scope.row.processed_image"
+                    :preview-src-list="[scope.row.processed_image]"  preview-teleported="true">
             <div slot="error" class="image-slot">
               <i class="el-icon-picture-outline"></i>
             </div>
@@ -94,7 +104,7 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {ref, watchPostEffect} from "vue";
 import {ElMessage, ElMessageBox} from 'element-plus'
 import axios from "axios";
 
@@ -139,7 +149,7 @@ export default {
     certainInR() {
       this.dialogVisible = false
     },
-    load(filename) {
+    load(filename, raw_image) {
       axios.get("show/" + filename, {responseType: "blob"}).then(res => {
         this.resNum += 1
         console.log(this.resNum + " " + this.resCount)
@@ -165,48 +175,53 @@ export default {
                 date: this.nowtime,
                 model: "AFRN",
                 name: filename,
-                address: im
+                processed_image: im,
+                raw_image: raw_image
               }
           )
         }
       })
     },
-    uploadImage() {
+    async uploadImage() {
       this.loading = true
       this.resCount = this.fileList.length
       for (let file of this.fileList) {
-        this.uploadSingle(file);
+        try{
+          let fileParam = new FormData();
+          fileParam.append("file", file["raw"]);
+          fileParam.append("fileName", file["name"]);
+          await axios.post('upload/' + this.model, fileParam).then(
+              (response) => {
+                let raw_image = window.URL.createObjectURL(file["raw"])
+                this.load(response.data.filename, raw_image)
+              }
+          )
+        }catch (e){}
       }
       this.fileList = []
     },
     download(filename) {
-      axios.get("download/" + filename, {responseType: "blob"}).then(res => {
-        const url = window.URL.createObjectURL(res.data)
-        let link = document.createElement("a");
-        link.style.display = "none";
-        link.href = url;
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        if (res.status === 200) {
-          ElMessage.success("下载成功")
-        } else {
-          ElMessage.error("下载失败，请重试")
-        }
-      })
-    },
-    uploadSingle(file) {
-      let fileParam = new FormData();
-      fileParam.append("file", file["raw"]);
-      fileParam.append("fileName", file["name"]);
-      axios.post('upload/' + this.model, fileParam).then(
-          (response) => {
-            console.log(response)
-            this.load(response.data.id)
+      try {
+        axios.get("download/" + filename, {responseType: "blob"}).then(res => {
+          const url = window.URL.createObjectURL(res.data)
+          let link = document.createElement("a");
+          link.style.display = "none";
+          link.href = url;
+          link.setAttribute("download", filename);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          if (res.status === 200) {
+            ElMessage.success("下载成功")
+          } else {
+            ElMessage.error("下载失败，请重试")
           }
-      )
+        })
+      }catch (e){
+        ElMessage.error("下载失败，请重试")
+      }
+
     }
   }
 }

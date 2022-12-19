@@ -46,9 +46,9 @@ def upload_file(model_name):
         # shutil.copy(src_path, 'data/processed')
         # msg = core.main.process(src_path, model_name)
         # if msg == 'Success':
-        return jsonify({'id':file_name})
+        return jsonify({'filename':file_name})
     app.logger.info("Failed to deal with image!\n", msg)
-    return jsonify({'id':file_name})
+    return jsonify({'filename':file_name})
 
 def find_next():
     file_list = os.listdir(UPLOAD_FOLDER)

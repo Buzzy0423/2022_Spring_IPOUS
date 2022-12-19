@@ -17,27 +17,6 @@ torch.cuda.empty_cache()
 
 
 def predict(model):
-    # TODO: 模型预测，结果储存到特定文件夹中
-    # test(file_path, '00_low_quality_dir')
-    # opt = test_options.TestOptions()
-    # os.system(
-    #     'python ../models/res_dg/test.py --dataroot ../data/dataset/'
-    #     ' --name RCDG_drive --model RCDG --dataset_mode cataract_guide_padding --eval')
-    # os.system(
-    #     'python ../models/res/test.py --dataroot ../data/unprocessed/'
-    #     ' --name arcnet --model arcnet --dataset_mode cataract_guide_padding --eval')
-
-    # dic = dict()
-    # dic['dataroot'] = '../data/dataset'
-    # dic['name'] = 'RCDG_drive'
-    # dic['model'] = 'RCDG'
-    # dic['dataset_mode'] = 'cataract_guide_padding'
-    # dic['eval'] = True
-    # parser = argparse.ArgumentParser()
     test()
-
-    # model = RCDGModel()
-    # model.set_input()
-    # model.test()
 
 

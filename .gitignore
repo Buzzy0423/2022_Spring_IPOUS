@@ -7,3 +7,5 @@
 **/.DS_Store
 *.pth
 *.pyc
+OSAP_web/OSAP_flask/data/processed/**
+OSAP_web/OSAP_flask/data/unprocessed/**
