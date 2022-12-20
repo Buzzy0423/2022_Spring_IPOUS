@@ -70,6 +70,7 @@ def get_params(opt, size, is_source=True):
     new_h = h
     new_w = w
     if opt.preprocess == 'resize_and_crop':
+        # TODO:添加数组的尺寸来随机挑选，target只随机裁286
         if opt.source_size_count == 1:
             new_h = new_w = opt.load_size
         else:
@@ -96,6 +97,7 @@ def get_transform(opt, params=None, grayscale=False, method=Image.BICUBIC, conve
     if grayscale:
         transform_list.append(transforms.Grayscale(1))
     if 'resize' in opt.preprocess:
+        # TODO:resize需要优化，此处只考虑params没有时直接取target的
         if params is None:
             osize = [opt.load_size, opt.load_size]
         else:
@@ -249,6 +251,7 @@ class TensorToGrayTensor(nn.Module):
         self.kernel = torch.tensor([])
         self.kernel = torch.empty(size=(1, 3, 1, 1), dtype=torch.float32, device=device)
         self.kernel.requires_grad = False
+        # TODO:确定输入是RGB
         self.kernel[0, 0, 0, 0] = R_rate
         self.kernel[0, 1, 0, 0] = G_rate
         self.kernel[0, 2, 0, 0] = B_rate

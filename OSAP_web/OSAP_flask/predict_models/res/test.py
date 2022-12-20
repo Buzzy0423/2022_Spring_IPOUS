@@ -6,7 +6,7 @@ It will load a saved model from '--checkpoints_dir' and save the results to '--r
 It first creates model and dataset given the option. It will hard-code some parameters.
 It then runs inference for '--num_test' images and save results to an HTML file.
 
-Example (You need to train predict_models first or download pre-trained predict_models from our website):
+Example (You need to train models first or download pre-trained models from our website):
     Test a CycleGAN model (both sides):
         python test.py --dataroot ./datasets/maps --name maps_cyclegan --model cycle_gan
 
@@ -27,31 +27,20 @@ See training and test tips at: https://github.com/junyanz/pytorch-CycleGAN-and-p
 See frequently asked questions at: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/docs/qa.md
 """
 import os
-# from predict_models.res.options.test_options import TestOptions
-import numpy as np
+from predict_models.res.options.test_options import TestOptions
+from predict_models.res.data import create_dataset
+from predict_models.res.models import create_model
+from predict_models.res.util.visualizer import save_images
+from predict_models.res.util import html
 
-from options.test_options import TestOptions
-from res.data import create_dataset
-from res.models import create_model
-from res.util import util as util
-from res.util import html
-from res.util.visualizer import save_images
-from PIL import Image
-import torch
 
-if __name__ == '__main__':
-    # def test(image_path, image_name):
+def test_ArcNet():
     opt = TestOptions().parse()  # get test options
     # hard-code some parameters for test
-    # opt.dataroot = image_path
-    # opt.name = 'arcnet'
-    # opt.model = 'arcnet'
-    # opt.netG = 'unet_256'
-    # opt.input_nc = 6
-    # opt.direction = 'AtoB'
-    # opt.dataset_mode = 'cataract_guide_padding'
-    # opt.norm = 'batch'
-
+    opt.dataroot='./data/dataset'
+    opt.dataset_mode = 'cataract_guide_padding'
+    opt.model = 'arcnet'
+    opt.input_nc = 6
     opt.num_threads = 0  # test code only supports num_threads = 1
     opt.batch_size = 1  # test code only supports batch_size = 1
     opt.serial_batches = True  # disable data shuffling; comment this line if results on randomly chosen images are needed.
@@ -59,26 +48,6 @@ if __name__ == '__main__':
     opt.display_id = -1  # no visdom display; the test code saves the results to a HTML file.
     guide = True if opt.input_nc > 3 else False
     dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
-
-    # dataset = opt.dataroot
-    # image_list = os.listdir(dataset)
-    # images = []
-    # print(dataset)
-    # for i in image_list:
-    #     image = Image.open(dataset + '/' + i)
-    #     image = np.array(image).transpose(2, 0, 1)
-    #     image = torch.tensor(image / 255)
-    #     image_mask = np.array(Image.open('../data/unprocessed/target_mask/2A.png'))
-    #     image_mask = np.stack([image_mask, image_mask, image_mask])
-    #     print(image_mask.shape)
-    #     # image_mask = image_mask.transpose((2, 0, 1))
-    #     image_mask = torch.tensor(image_mask / 255)
-    #
-    #     image_pair = dict()
-    #     image_pair['TA'] = image
-    #     image_pair['T_mask'] = image_mask
-    #     images.append(image_pair)
-
     model = create_model(opt)  # create a model given opt.model and other options
     model.setup(opt)  # regular setup: load and print networks; create schedulers
     # create a website
@@ -93,20 +62,13 @@ if __name__ == '__main__':
     # For [CycleGAN]: It should not affect CycleGAN as CycleGAN uses instancenorm without dropout.
     if opt.eval:
         model.eval()
-    print(len(dataset))
     for i, data in enumerate(dataset):
         if i >= opt.num_test:  # only apply our model to opt.num_test images.
             break
         model.set_input(data)  # unpack data from data loader
         model.test()  # run inference
         visuals = model.get_current_visuals()  # get image results
-        # label, im_data = visuals
-        # print(label)
-        # im = util.tensor2im(im_data, guide=guide)
-        # save_path = os.path.join('../../data/processed/', 'test')
-        # util.save_image(im, save_path)
         img_path = model.get_image_paths()  # get image paths
-        img_path = '../core/checkpoints/results'
         if i % 5 == 0:  # save images to an HTML file
             print('processing (%04d)-th image... %s' % (i, img_path))
         save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize, guide=guide)

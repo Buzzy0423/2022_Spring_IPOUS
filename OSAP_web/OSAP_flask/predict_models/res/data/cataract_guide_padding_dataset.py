@@ -1,8 +1,8 @@
 import os.path
 import random
 import torch
-from data.base_dataset import BaseDataset, get_params, get_transform_six_channel
-from data.image_folder import make_dataset
+from predict_models.res.data.base_dataset import BaseDataset, get_params, get_transform_six_channel
+from predict_models.res.data.image_folder import make_dataset
 from PIL import Image
 
 

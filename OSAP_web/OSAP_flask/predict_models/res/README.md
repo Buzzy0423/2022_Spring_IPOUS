@@ -1,29 +1,22 @@
-# Restoration-of-Cataract-Images-via-Domain-Generalization
-Code for Domain Generalization in Restoration of Cataract Fundus Images via High-frequency Components [1]. 
+# Restoration-of-Cataract-Images-via-Domain-Adaptation
+There is little access to large datasets of cataract images paired with their corresponding clear ones. Therefore, it is unlikely to build a restoration model for cataract images through supervised learning.
 
-This code is inherited from [our previous work [7]](https://github.com/liamheng/Restoration-of-Cataract-Images-via-Domain-Adaptation)
+Here, we propose an unsupervised restoration method via cataract-like image simulation and domain adaptation, and an annotation-free restoration network for cataractous fundus images. The source code for both has been released.
 
-Unlike the previous work, this model is based on domain generalization, free from the target domain data in training.
+## Results
 
-## Domain Generalization in Restoration of Cataract Fundus Images via High-frequency Components
+Li H ,  Liu H ,  Hu Y , et al. Restoration Of Cataract Fundus Images Via Unsupervised Domain Adaptation[C]// 2021 IEEE 18th International Symposium on Biomedical Imaging (ISBI). IEEE, 2021.
 
-<div align="left">
-    <img src="./images/introduction.png" alt="RCDG" style="zoom: 33%;" />
-</div>
+**Result：**
+![Output](images/Output.png)
+A comparison of the restored fundus images. (a) cataract image. (b) clear fundus image after surgery. (c) dark channel prior. (d) SGRIF [2]. (e) pix2pix [4]. (f) CycleGAN [5]. (g) the proposed method [8].
 
-Fig. 1. Overview of the proposed model. The bottom of (a) and (b) exhibit that $k$ cataract-like fundus images $s'_i$ are randomly synthesized from an identical clear image $s$ to cover the potential target domain $T$.On the top part, HFCs $H(\cdot)$ are extracted from the images to reduce the domain shift and then achieve domain alignment. Finally, the clear image is reconstructed from the aligned HFCs.
 
-<div align="left">
-    <img src="./images/structure.png" alt="RCDG" style="width: 80%;" />
-</div>
 
-Fig. 2. Overview of the proposed model. Cataract-like images $s’$ are synthesized from clear image $s$ using  DR to construct source domains. $H(\cdot)$ and  $L(\cdot)$ are the extraction of HFCs and LFCs. Then, DIFs are acquired by domain alignment using HFCs and generator $G_H$. Finally, generator $G_R$ reconstructs the clear fundus image from the aligned HFCs.
+Li H, Liu H, Hu Y, et al. An Annotation-free Restoration Network for Cataractous Fundus Images[J]. IEEE Transactions on Medical Imaging, 2022.
+![arcnet](./images/arcnet.png)
 
-<div align="left">
-    <img src="./images/comparison.png" alt="RCDG" style="zoom: 100%;" />
-</div>
-
-Fig. 3. Comparison between the cataract restoration algorithms. (a) cataract fundus image. (b) SGRIF [2]. (c) pix2pix [3]. (d) Luo et al. [4]. (e) CofeNet [5]. (f) Li et al. [6]. (g) The proposed method [1]. (h) clear image after surgery.
+Visual comparison of images restored from cataract ones. (a) cataract image. (b) clear fundus image after surgery. (c) Mitra et al. [1]. (d)SGRIF [2]. (e) Cao et al. [3]. (f) pix2pix [4]. (g) CycleGAN [5]. (h) Luo et al. [6]. (i) CofeNet [7]. (j) ArcNet [10].
 
 # Prerequisites
 
@@ -33,7 +26,7 @@ Fig. 3. Comparison between the cataract restoration algorithms. (a) cataract fun
 
 \- CPU or NVIDIA GPU + CUDA CuDNN
 
-## Environment (Using conda)
+# Environment (Using conda)
 
 ```
 conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing opencv-python
@@ -43,89 +36,90 @@ conda install pytorch torchvision -c pytorch # add cuda90 if CUDA 9
 conda install visdom dominate -c conda-forge # install visdom and dominate
 ```
 
-## Data preparation
+# Simulate cataract-like images
 
-Go to the root directory of this project, and run the following command:
-
-### Preparing the simulation image
-
-```shell
-python util/cataract_simulation.py
-```
-
-### Get the mask of source image and target image
-
-Get the mask of source image
-
-```shell
-python util/get_mask.py --image_dir ./images/drive_cataract/source --output_dir ./images/drive_cataract/source_mask --mode pair
-```
-
-Copy the target image into './images/drive_cataract/target', and run the following command.
-
-```shell
-python ./util/get_mask.py --image_dir ./images/drive_cataract/target --output_dir ./images/drive_cataract/target_mask --mode single
-```
-
-### Dataset and dataloader
-
-You can also design your own dataset in data/xx_dataset.py for your own dataset format by imitating the script data/cataract_guide_padding_dataset.py.
-
-Note that mask is needed in the model.
+Use the script in ./utils/catacact_simulation.py
 
 
-## Visualization when training
+# Visualization when training
 
 python -m visdom.server
 
-Then, open this link in the browser
+# To open this link in the browser
 
 http://localhost:8097/
 
+# Dataset preparation
+
+To set up your own dataset constructed like images/cataract_dataset. Note that the number of source images should be bigger than the number of target images, or you can design you own data loader.
+
 ## Trained model's weight
 
-For the model of "Domain Generalization in Restoration of Cataract Fundus Images via High-frequency Components", please download the pretrained model from this link:
+For the model of "Restoration Of Cataract Fundus Images Via Unsupervised Domain Adaptation", please download the pretrained model from this link:
 
-https://drive.google.com/file/d/1ejnisgBh8aolGd5qcglWW-RBfc1QqLdj/view?usp=sharing
+https://drive.google.com/file/d/1Ystqt3RQVfIPPukE7ZdzzFM_hBqB0lr0/view?usp=sharing
 
-Then, place the directory in project_root/checkpoints/RCDG_drive, so that we can get the file like project_root/checkpoints/RCDG_drive/latest_net_GH.pth
+or use link: https://pan.baidu.com/s/1Ax18-10dpJDToieqvcXGxQ , code: ak7c
 
-With this trained weight, we can use the following command to inference.
+Then, place the document in project_root/checkpoints/pixDA_sobel, so that we can get the file like project_root/checkpoints/cataract_model/latest_net_G.pth
 
-```
-python test.py --dataroot ./images/drive_cataract --name RCDG_drive_trained --model RCDG --dataset_mode cataract_guide_padding --eval
-```
 
-# Model Training, testing and inference
+
+For the model of "An Annotation-free Restoration Network for Cataractous Fundus Images", please download the pretrained model from this link:
+
+https://drive.google.com/file/d/1VJ-_W7rRmy90AcgeAJtt_z7fgeBpC4Id/view?usp=share_link
+
+or use link: https://pan.baidu.com/s/1hFt0bMpBb5V0Gj0ogYHGbA , code: 3xg0
+
+Then, place the document in project_root/checkpoints/arcnet, so that we can get the file like project_root/checkpoints/arcnet/latest_net_G.pth
+
+# Command to run
+
+Please note that root directory is the project root directory.
 
 ## Train
 
 ```
-python train.py --dataroot ./images/drive_cataract --name RCDG_drive --model RCDG --dataset_mode cataract_guide_padding --batch_size 8 --n_epochs 150 --n_epochs_decay 50
+python train.py --dataroot ./datasets/cataract_dataset --name train_pixDA_sobel --model pixDA_sobel --netG unet_256 --direction AtoB --dataset_mode cataract --norm batch --batch_size 8 --n_epochs 150 --n_epochs_decay 50 --input_nc 6 --output_nc 3
 ```
 
-## Test & inference
+or
 
 ```
-python test.py --dataroot ./images/drive_cataract --name RCDG_drive --model RCDG --dataset_mode cataract_guide_padding --eval
+python train.py --dataroot ./images/cataract_dataset --name train_arcnet --model arcnet --netG unet_256 --input_nc 6 --direction AtoB --dataset_mode cataract_guide_padding --norm batch --batch_size 8 --lr_policy step --n_epochs 100 --n_epochs_decay 0 --lr_decay_iters 80
+```
+
+## Test & Visualization
+
+```
+python test.py --dataroot ./datasets/cataract_dataset --name pixDA_sobel --model pixDA_sobel --netG unet_256 --direction AtoB --dataset_mode cataract --norm batch --input_nc 6 --output_nc 3
+```
+
+or
+
+```
+python test.py --dataroot ./images/cataract_dataset --name arcnet --model arcnet --netG unet_256 --input_nc 6 --direction AtoB --dataset_mode cataract_guide_padding --norm batch
 ```
 
 # Reference
 
-[1] Liu H ,  Li H ,  Ou M , et al. Domain Generalization in Restoration of Cataract Fundus Images via High-frequency Components[C]// 2022 IEEE 19th International Symposium on Biomedical Imaging (ISBI). IEEE, 2022.
+[1] A. Mitra, S. Roy, S. Roy, and S. K. Setua, “Enhancement and restoration of non-uniform illuminated fundus image of retina obtained through thin layer of cataract,” Computer methods and programs in biomedicine, vol. 156, pp. 169–178, 2018.
 
 [2] Cheng J ,  Li Z ,  Gu Z , et al. Structure-Preserving Guided Retinal Image Filtering and Its Application for Optic Disk Analysis[J]. IEEE TRANSACTIONS ON MEDICAL IMAGING MI, 2018.
 
-[3] Isola P ,  Zhu J Y ,  Zhou T , et al. Image-to-Image Translation with Conditional Adversarial Networks[C]// IEEE Conference on Computer Vision & Pattern Recognition. IEEE, 2016.
+[3] L. Cao, H. Li, and Y. Zhang, “Retinal image enhancement using lowpass filtering and α-rooting,” Signal Processing, vol. 170, p. 107445, 2020.
 
-[4] Luo Y ,  K  Chen,  Liu L , et al. Dehaze of Cataractous Retinal Images Using an Unpaired Generative Adversarial Network[J]. IEEE Journal of Biomedical and Health Informatics, 2020, PP(99):1-1.
+[4] Isola P ,  Zhu J Y ,  Zhou T , et al. Image-to-Image Translation with Conditional Adversarial Networks[C]// IEEE Conference on Computer Vision & Pattern Recognition. IEEE, 2016.
 
-[5] Z. Shen, H. Fu, J. Shen, and L. Shao, “Modeling and enhancing lowquality retinal fundus images,” IEEE transactions on medical imaging, vol. 40, no. 3, pp. 996–1006, 2020.
+[5] Zhu J Y ,  Park T ,  Isola P , et al. Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks[J]. IEEE, 2017.
 
-[6] Li H, Liu H, Hu Y, et al. Restoration Of Cataract Fundus Images Via Unsupervised Domain Adaptation[C]//2021 IEEE 18th International Symposium on Biomedical Imaging (ISBI). IEEE, 2021: 516-520.
+[6] Luo Y ,  K  Chen,  Liu L , et al. Dehaze of Cataractous Retinal Images Using an Unpaired Generative Adversarial Network[J]. IEEE Journal of Biomedical and Health Informatics, 2020, PP(99):1-1.
 
-[7] Li H, Liu H, Hu Y, et al. An Annotation-free Restoration Network for Cataractous Fundus Images[J]. IEEE Transactions on Medical Imaging, 2022.
+[7] Z. Shen, H. Fu, J. Shen, and L. Shao, “Modeling and enhancing lowquality retinal fundus images,” IEEE transactions on medical imaging, vol. 40, no. 3, pp. 996–1006, 2020.
 
+[8] Li H ,  Liu H ,  Hu Y , et al. Restoration Of Cataract Fundus Images Via Unsupervised Domain Adaptation[C]// 2021 IEEE 18th International Symposium on Biomedical Imaging (ISBI). IEEE, 2021.
+
+[9] Li H, Liu H, Hu Y, et al. An Annotation-free Restoration Network for Cataractous Fundus Images[J]. IEEE Transactions on Medical Imaging, 2022.
 # Citation
 
 ```
