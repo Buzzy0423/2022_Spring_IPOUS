@@ -5,6 +5,7 @@ import torch
 # import model run in server
 # from predict_models.res_dg.models.RCDG_model import RCDGModel
 from predict_models.res_dg.test import test
+from predict_models.res.test import test_ArcNet
 
 import argparse
 
@@ -17,6 +18,11 @@ torch.cuda.empty_cache()
 
 
 def predict(model):
-    test()
+    # TODO: 模型预测，结果储存到特定文件夹中
+    if model == 'RCDG_model':
+        test()
+    elif model == 'ArcNet':
+        test_ArcNet()
+
 
 
