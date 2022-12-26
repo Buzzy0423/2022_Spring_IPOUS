@@ -13,7 +13,8 @@
     "@element-plus/icons-vue": "^2.0.9",
     "axios": "^1.2.0",
     "element-plus": "^2.2.2",
-    "vue": "^3.2.36"
+    "vue": "^3.2.36",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.1.4",

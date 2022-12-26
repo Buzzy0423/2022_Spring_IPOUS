@@ -15,9 +15,12 @@ import 'uno.css'
 
 // If you want to use ElMessage, import it.
 import "element-plus/theme-chalk/src/message.scss"
+import router from "../src/router"
+
 
 const app = createApp(App);
 // app.use(ElementPlus);
+app.use(router)
 for(let iconName in ElIconModules){
     // @ts-ignore
     app.component(iconName,ElIconModules[iconName])

@@ -9,7 +9,8 @@
           <instruction class="instruction"/>
         </el-aside>
         <el-main>
-          <Content class="content"/>
+<!--          <Content class="content"/>-->
+          <router-view class="main"/>
         </el-main>
       </el-container>
     </el-container>
@@ -22,11 +23,22 @@
   color: var(--ep-text-color-primary);
 }
 
-.instruction {
-  width: 60%;
-  height: 310px;
-  margin-top: 50%;
-  margin-left: 15%;
+
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+
 </style>
+
+<script lang="ts">
+
+
+export default {
+  name : "App",
+
+}
+</script>
