@@ -35,7 +35,7 @@
         </template>
       </el-upload>
       <div class="loading_bar" v-if="loading">
-        <h3>正在增强图像，请稍等。。。</h3>
+        <h3>正在增强眼底图像，请耐心等待</h3>
         <el-progress
             v-if="loading"
             :stroke-width="12"
@@ -130,7 +130,7 @@ export default {
       isUploading: false,
       starttime: 0,
       currenttime: 0,
-      averagetime: 4500,
+      averagetime: 2500,
       percentage: 0,
       model: '',
       fileList: [],
@@ -184,8 +184,8 @@ export default {
     certainInR() {
       this.dialogVisible = false
     },
-    load(filename, raw_image, model_name) {
-      axios.get("show/" + filename, {responseType: "blob"}).then(res => {
+    load(filename, sha1,  raw_image, model_name) {
+      axios.get("show/" + sha1, {responseType: "blob"}).then(res => {
         this.resNum += 1
         console.log(this.resNum + " " + this.resCount)
         if (this.resNum === this.resCount) {
@@ -214,8 +214,8 @@ export default {
               {
                 date: this.nowtime,
                 model: model_name,
-                real_name: filename,
-                name: "case_" + filename.replace(/\.[^/.]+$/, ''),
+                real_name: sha1,
+                name: filename.replace(/\.[^/.]+$/, ''),
                 processed_image: im,
                 raw_image: raw_image
               }
@@ -237,10 +237,11 @@ export default {
           await axios.post('upload/' + this.model, fileParam).then(
               (response) => {
                 let raw_image = window.URL.createObjectURL(file["raw"])
-                this.load(response.data.filename, raw_image, this.model)
+                this.load(file["name"], response.data.filename, raw_image, this.model)
               }
           )
         } catch (e) {
+          console.log(e)
         }
       }
       this.fileList = []

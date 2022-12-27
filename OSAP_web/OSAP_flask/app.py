@@ -1,7 +1,7 @@
 import os
 
 from flask import *
-
+import hashlib
 from core.main import process
 
 UPLOAD_FOLDER = os.path.join('data', 'unprocessed')
@@ -34,15 +34,24 @@ def allowed_file(filename):
 @app.route('/upload/<model_name>', methods=['GET', 'POST'])
 def upload_file(model_name):
     file = request.files['file']
-    # print(datetime.datetime.now(), file.filename)
-    # print(os.path.splitext(file.filename)[1])
     msg = ''
     if file and allowed_file(file.filename):
-        file_id = find_next()
-        file_name = str(file_id) + os.path.splitext(file.filename)[1]
-        src_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+        src_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(src_path)
-        process(src_path, model_name)
+
+        with open(src_path, 'rb') as f:
+            sha1 = hashlib.sha1()
+            while True:
+                block = f.read(65536)
+                if not block:
+                    break
+                sha1.update(block)
+            hash_value = sha1.hexdigest()
+
+        file_name = hash_value + os.path.splitext(file.filename)[1]
+        sha1_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+        os.rename(src_path, sha1_path)
+        process(sha1_path, model_name)
         # shutil.copy(src_path, 'data/processed')
         # msg = core.main.process(src_path, model_name)
         # if msg == 'Success':
@@ -50,15 +59,6 @@ def upload_file(model_name):
     app.logger.info("Failed to deal with image!\n", msg)
     return jsonify({'filename':file_name})
 
-def find_next():
-    file_list = os.listdir(UPLOAD_FOLDER)
-    max = -1
-    for f in file_list:
-        if not f.startswith('.'):
-            id = int(os.path.splitext(f)[0])
-            if id > max:
-                max = id
-    return max + 1
 
 
 # show photo
