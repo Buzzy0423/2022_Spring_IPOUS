@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import * as ElIconModules from '@element-plus/icons-vue'
+import 'element-plus/theme-chalk/dark/css-vars.css';
 
 // import "~/styles/element/index.scss";
 

@@ -5,7 +5,7 @@ import hashlib
 from core.main import process
 
 UPLOAD_FOLDER = os.path.join('data', 'unprocessed')
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'tiff'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'tiff', 'JPG'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

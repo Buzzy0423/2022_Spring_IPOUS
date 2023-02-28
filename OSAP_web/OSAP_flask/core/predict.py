@@ -18,7 +18,6 @@ torch.cuda.empty_cache()
 
 
 def predict(model):
-    # TODO: 模型预测，结果储存到特定文件夹中
     if model == 'RCDG_model':
         test()
     elif model == 'ArcNet':

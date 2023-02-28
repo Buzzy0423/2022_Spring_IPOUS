@@ -34,7 +34,7 @@
           </div>
         </template>
       </el-upload>
-      <div class="loading_bar" v-if="loading">
+      <div class="loading_bar" v-if="loading" style="margin-top: 7%; margin-bottom: 9%">
         <h3>正在增强眼底图像，请耐心等待</h3>
         <el-progress
             v-if="loading"
@@ -69,11 +69,9 @@
       上传图片
     </el-button>
     <!--  题目-->
-    <div style="margin: 15px">
-      处理记录
-    </div>
+
     <!--  功能区-->
-    <el-table :data="tableData">
+    <el-table :data="tableData" style="margin-top: 5%">
       <el-table-column fixed prop="date" label="上传时间" align="center" header-align="center"/>
       <el-table-column prop="model" label="模型" align="center" header-align="center"/>
       <el-table-column prop="name" label="图片名" align="center" header-align="center"/>
@@ -146,7 +144,7 @@ export default {
         },
         {
           value: 'RCDG_model',
-          label: 'RCDG_model',
+          label: 'RCDG',
         }
       ],
       tableData: [],
@@ -284,16 +282,6 @@ export default {
 .record {
   width: 80%;
   margin-left: 8%;
-}
-
-.upload_box {
-  display: v-bind(upload_display);
-}
-
-.loading_bar {
-  display: v-bind(loading_display);
-  margin-top: 10%;
-  margin-bottom: 5%;
 }
 
 </style>

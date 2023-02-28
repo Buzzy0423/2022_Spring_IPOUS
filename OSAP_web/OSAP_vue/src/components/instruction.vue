@@ -1,6 +1,5 @@
 <template>
   <div class="aside">
-    <h3>白内障眼底图像增强系统</h3>
     <el-card class="inst" style="border-radius: 8px" shadow="never">
       <template #header>
         <span style="margin-left: -50%; font-weight: bold">使用指南</span>
@@ -25,6 +24,7 @@ export default {
 <style scoped>
 .aside{
   margin-left: 15%;
+  margin-top: 15%;
 }
 
 </style>

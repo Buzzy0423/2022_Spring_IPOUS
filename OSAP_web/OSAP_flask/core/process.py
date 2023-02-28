@@ -5,12 +5,6 @@ import numpy as np
 from scipy import ndimage
 
 def preprocess(image_path, save_path):
-    """
-
-    :param
-    :return:
-    """
-
     image = Image.open(image_path).convert('RGB')
     mask = get_mask(image)
     cv2.imwrite(save_path, mask * 255)
